@@ -1,0 +1,16 @@
+{
+  "name": "SABITX CORE",
+  "short_name": "SABITX",
+  "description": "Operator-grade system interface for survival, commerce, override, and control.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#0affff",
+  "icons": [
+    {
+      "src": "/sabitx/crest-square.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
