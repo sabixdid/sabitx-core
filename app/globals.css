@@ -11,7 +11,7 @@ html, body {
   font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont;
 }
 
-/* Noise */
+/* Noise texture */
 .sabitx-noise {
   position: fixed;
   inset: 0;
@@ -21,34 +21,50 @@ html, body {
   mix-blend-mode: overlay;
   z-index: 9999;
 }
-/* Import animation suite */
-@import "../styles/animations.css";
 
-/* Noise layer */
+/* Noise overlay animation */
 .noise-overlay {
   position: fixed;
   inset: 0;
-  background-image: url('/sabitx/noise.png');
+  background-image: url("/sabitx/noise.png");
   opacity: 0.07;
   pointer-events: none;
   mix-blend-mode: overlay;
-  animation: drift 14s infinite;
+  animation: drift 14s infinite ease-in-out;
 }
 
-/* Parallax wrapper for crest */
+/* Parallax crest breathing */
 .crest-parallax {
-  animation: slowPulse 16s infinite;
+  animation: slowPulse 16s infinite ease-in-out;
   pointer-events: none;
 }
 
-/* Hover force-field for module cards */
+/* SABITX hover-force field */
 .module-card:hover {
   transform: translateY(-4px) scale(1.015);
   box-shadow: 0 12px 30px rgba(255, 255, 255, 0.08);
 }
 
-/* Scroll reveal classes */
+/* Scroll reveal */
 .row-reveal {
   opacity: 0;
   animation: rowReveal 0.8s ease-out forwards;
+}
+
+/* Animation keyframes (inline so we don’t depend on missing files) */
+@keyframes drift {
+  0% { transform: translate3d(0,0,0); }
+  50% { transform: translate3d(-10px, 10px, 0); }
+  100% { transform: translate3d(0,0,0); }
+}
+
+@keyframes slowPulse {
+  0% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.03); opacity: 0.92; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes rowReveal {
+  0% { opacity: 0; transform: translateY(20px); }
+  100% { opacity: 1; transform: translateY(0); }
 }
