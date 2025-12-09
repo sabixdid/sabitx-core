@@ -1,41 +1,39 @@
 import { NextResponse } from "next/server";
-import VoiceResponse from "twilio/lib/twiml/VoiceResponse";
-import operatorConfig from "../../../config/sabitx-operator.json";
+import { VoiceResponse } from "twilio/lib/twiml/VoiceResponse";
+import operatorConfig from "@/config/sabitx-operator.json";
 
 export async function POST(req: Request) {
-  const body = await req.formData();
-  const speech = (body.get("SpeechResult") || "").toString().toLowerCase();
+  const form = await req.formData();
+  const speech = (form.get("SpeechResult") || "").toString().toLowerCase();
 
   const twiml = new VoiceResponse();
 
   // Emergency detection
-  const emergencyHits = operatorConfig.escalation.words.some(w =>
-    speech.includes(w)
+  const emergency = operatorConfig.escalation.words.some(w =>
+    speech.includes(w.toLowerCase())
   );
 
-  if (emergencyHits) {
+  if (emergency) {
     twiml.say("Emergency escalation triggered. Connecting now.");
-    twiml.redirect("/api/ai/emergency");
     return new NextResponse(twiml.toString(), {
-      headers: { "Content-Type": "text/xml" }
+      headers: { "Content-Type": "text/xml" },
     });
   }
 
-  // Determine route based on keywords
-  let routeKey = null;
+  // Determine routing keyword
+  let routeKey: string | null = null;
   for (const [keyword, target] of Object.entries(operatorConfig.routing.keywords)) {
     if (speech.includes(keyword.toLowerCase())) {
-      routeKey = target;
+      routeKey = target as string;
       break;
     }
   }
 
-  // Fallback
   if (!routeKey) {
     twiml.say(operatorConfig.voice.noMatch);
     twiml.redirect("/api/ai/call");
     return new NextResponse(twiml.toString(), {
-      headers: { "Content-Type": "text/xml" }
+      headers: { "Content-Type": "text/xml" },
     });
   }
 
@@ -50,6 +48,6 @@ export async function POST(req: Request) {
   }
 
   return new NextResponse(twiml.toString(), {
-    headers: { "Content-Type": "text/xml" }
+    headers: { "Content-Type": "text/xml" },
   });
 }

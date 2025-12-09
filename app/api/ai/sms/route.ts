@@ -1,15 +1,14 @@
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
-  const body = await req.formData();
-  const from = body.get("From");
-  const msg = body.get("Body")?.toString() || "";
+  const form = await req.formData();
+  const msg = (form.get("Body") || "").toString();
 
-  // Auto-acknowledge OTP or verification codes
   const isOtp = /\b\d{4,8}\b/.test(msg);
 
-  let reply = "Message received.";
-  if (isOtp) reply = "Verification code received on SABITX line.";
+  const reply = isOtp
+    ? "Verification code received on SABITX line."
+    : "Message received.";
 
   const xml = `
     <Response>
@@ -18,6 +17,6 @@ export async function POST(req: Request) {
   `;
 
   return new NextResponse(xml, {
-    headers: { "Content-Type": "text/xml" }
+    headers: { "Content-Type": "text/xml" },
   });
 }
