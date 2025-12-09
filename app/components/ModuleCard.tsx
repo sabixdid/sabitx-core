@@ -1,28 +1,35 @@
-"use client";
-
 import Link from "next/link";
 
-export default function ModuleCard({ label, title, desc, tag, href }) {
+interface ModuleCardProps {
+  label: string;
+  title: string;
+  desc: string;
+  tag?: string;
+  href: string;
+}
+
+export default function ModuleCard({
+  label,
+  title,
+  desc,
+  tag,
+  href
+}: ModuleCardProps) {
   return (
     <Link
       href={href}
-      className="block w-full bg-white/5 border border-white/10 rounded-2xl p-6
-      hover:bg-white/10 hover:border-white/20 transition-all duration-300 backdrop-blur-xl"
+      className="module-card block p-6 rounded-xl border border-white/10 hover:border-white/20 transition-all duration-300"
     >
-      <div className="flex justify-between items-center mb-1">
-        <span className="text-xs tracking-widest text-neutral-400 uppercase">{label}</span>
-        <span className="text-[0.55rem] tracking-widest border border-neutral-500 rounded-full px-3 py-1">
+      <div className="text-xs uppercase tracking-widest text-white/60 mb-2">
+        {label}
+      </div>
+      <div className="text-xl font-semibold mb-1">{title}</div>
+      <div className="text-white/70 text-sm mb-3">{desc}</div>
+      {tag && (
+        <div className="text-[10px] px-2 py-1 rounded-md bg-white/10 inline-block">
           {tag}
-        </span>
-      </div>
-
-      <div className="text-[1.5rem] font-light mb-1">{title}</div>
-
-      <p className="text-neutral-300 text-sm max-w-md leading-relaxed">{desc}</p>
-
-      <div className="mt-4 text-xs tracking-widest text-neutral-400 uppercase">
-        Access Brief →
-      </div>
+        </div>
+      )}
     </Link>
   );
 }
