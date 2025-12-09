@@ -1,0 +1,65 @@
+{
+  "name": "SABITX Operator",
+  "voice": {
+    "language": "en-US",
+    "style": "assertive",
+    "tone": "professional-direct",
+    "intro": "SABIT X, Operator Mode online. What store or issue are you calling about?",
+    "noMatch": "I didn’t catch that. Which location do you need: Deport, Hugo, or Dallas?"
+  },
+  "routing": {
+    "keywords": {
+      "deport": "store_deport",
+      "9016": "store_deport",
+      "texas": "store_deport",
+      "hugo": "store_hugo",
+      "903": "store_hugo",
+      "oklahoma": "store_hugo",
+      "dallas": "store_dallas",
+      "2439": "store_dallas",
+      "walnut": "store_dallas",
+      "vendor": "vendor",
+      "delivery": "vendor",
+      "gas": "store_deport",
+      "fuel": "store_deport",
+      "operator": "operator"
+    },
+    "fallback": "operator",
+    "routes": {
+      "store_deport": {
+        "action": "dial",
+        "number": "+19016430000",
+        "whisper": "Connecting you to SABITX Deport."
+      },
+      "store_hugo": {
+        "action": "dial",
+        "number": "+19030000000",
+        "whisper": "Connecting you to Hugo Store Operations."
+      },
+      "store_dallas": {
+        "action": "dial",
+        "number": "+12142877177",
+        "whisper": "Connecting you to Dallas Walnut Hill."
+      },
+      "vendor": {
+        "action": "say",
+        "message": "State your company name and delivery details. Your message will be logged and forwarded to operations automatically."
+      },
+      "operator": {
+        "action": "say",
+        "message": "I can help with locations, hours, pumps, payments, or connecting you. What do you need?"
+      }
+    }
+  },
+  "fallbackBehavior": {
+    "maxAttempts": 2,
+    "final": "I’ll connect you to operations now.",
+    "handoff": "operator"
+  },
+  "escalation": {
+    "words": ["emergency", "urgent", "help now", "accident", "police", "fire"],
+    "action": "sms",
+    "to": "+12142877177",
+    "message": "⚠️ SABITX Emergency escalation triggered."
+  }
+}

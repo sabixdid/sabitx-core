@@ -1,114 +1,89 @@
 "use client";
 
-import { useState } from "react";
-import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
+import ParallaxLayer from "./components/ParallaxLayer";
+import LockCore from "./components/LockCore";
+import ModuleGrid from "./components/ModuleGrid";
 
 export default function Home() {
-  const [unlock, setUnlock] = useState(false);
+  const { scrollYProgress } = useScroll();
+
+  // Crest fade + scale when scrolling
+  const crestScale = useTransform(scrollYProgress, [0, 1], [1, 1.25]);
+  const crestOpacity = useTransform(scrollYProgress, [0, 1], [0.14, 0.05]);
+
+  // Headline motion
+  const titleOpacity = useTransform(scrollYProgress, [0, 0.2], [1, 0]);
+  const titleY = useTransform(scrollYProgress, [0, 0.2], [0, -60]);
 
   return (
-    <main className="relative min-h-screen w-full overflow-hidden bg-black text-white flex items-center justify-center">
+    <main className="relative w-full min-h-screen bg-black overflow-hidden text-white">
 
-      {/* BACKGROUND GHOST LION */}
+      {/* BACKGROUND CREST (PARALLAX REACTIVE) */}
       <motion.div
-        className="absolute inset-0 bg-cover bg-center opacity-[0.22]"
-        style={{ backgroundImage: "url('/sabitx/ghost.png')" }}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 0.22 }}
-        transition={{ duration: 1.8 }}
+        style={{ scale: crestScale, opacity: crestOpacity }}
+        className="pointer-events-none fixed inset-0 flex items-center justify-center z-0"
+      >
+        <img
+          src="/sabitx/crest-square.png"
+          className="w-[60vw] max-w-[900px] opacity-20 select-none"
+        />
+      </motion.div>
+
+      {/* PARALLAX FLOATING LAYERS */}
+      <ParallaxLayer
+        img="/sabitx/noise.png"
+        speed={0.02}
+        opacity={0.2}
+        scale={1.8}
+      />
+      <ParallaxLayer
+        img="/sabitx/aura.png"
+        speed={0.05}
+        opacity={0.15}
+        scale={1.2}
       />
 
-      {/* NOISE OVERLAY */}
-      <div className="sabitx-noise pointer-events-none absolute inset-0" />
-
-      {/* MAIN COLUMN */}
-      <motion.div
-        initial={{ opacity: 0, y: 50 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1.25, ease: "easeOut" }}
-        className="relative z-20 flex flex-col items-center text-center px-4"
-      >
-
-        {/* LOCKED / UNLOCKED CREST */}
-        <motion.img
-          src={unlock ? "/sabitx/crest.png" : "/sabitx/crest.png"}
-          alt="SABITX Crest"
-          className="w-[320px] md:w-[420px]"
-          initial={{ scale: 0.85, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ duration: 1.3, ease: "easeOut" }}
-        />
-
-        {/* AURA */}
-        {!unlock && (
-          <motion.img
-            src="/sabitx/aura.png"
-            className="absolute w-[420px] md:w-[520px] top-[140px] opacity-70 mix-blend-screen"
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 0.7, scale: 1 }}
-            transition={{ duration: 1.4 }}
-          />
-        )}
+      {/* HERO SECTION */}
+      <section className="relative z-20 h-[125vh] flex flex-col items-center justify-center text-center px-6">
 
         {/* TITLE */}
-        <h1 className="mt-6 text-4xl md:text-5xl font-bold tracking-wide drop-shadow-[0_0_12px_rgba(255,255,255,0.4)]">
-          SABITX CORE
-        </h1>
+        <motion.h1
+          style={{ opacity: titleOpacity, y: titleY }}
+          className="text-[2.3rem] md:text-[3.2rem] font-light max-w-4xl leading-tight tracking-tight"
+        >
+          SABIT X is an operator-grade system for survival, automation, and luxury.
+        </motion.h1>
 
-        {/* STATUS TEXT */}
-        <p className="mt-2 text-zinc-400 text-lg">
-          {unlock ? "System Online." : "Signal Detected. Awaiting Authentication."}
-        </p>
+        {/* SUBTEXT */}
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 0.9, y: 0 }}
+          transition={{ delay: 0.8, duration: 0.6 }}
+          className="mt-4 text-neutral-300 text-lg tracking-wide"
+        >
+          Still Transmitting.
+        </motion.p>
 
-        {/* LOCK BUTTON */}
-        {!unlock && (
-          <motion.button
-            onClick={() => setUnlock(true)}
-            className="mt-8 px-10 py-4 rounded-full bg-white/5 border border-white/20 backdrop-blur-xl hover:bg-white/10 transition"
-            whileTap={{ scale: 0.92 }}
-          >
-            UNLOCK
-          </motion.button>
-        )}
+        {/* LOCK INTERFACE */}
+        <LockCore />
 
-        {/* ACCESS BUTTONS */}
-        {unlock && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.35 }}
-            className="mt-10 flex flex-col md:flex-row gap-4"
-          >
-            <a
-              href="https://vault.sabitx.com"
-              className="px-6 py-3 rounded-full bg-white/10 border border-white/20 hover:bg-white/20 backdrop-blur-md transition"
-            >
-              Vault Console
-            </a>
+        {/* INSTRUCTION */}
+        <motion.p
+          initial={{ opacity: 0, y: 25 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1.2, duration: 0.6 }}
+          className="mt-8 tracking-widest text-neutral-400 uppercase text-[0.75rem]"
+        >
+          Scroll to access modules
+        </motion.p>
+      </section>
 
-            <a
-              href="https://store.sabitx.com"
-              className="px-6 py-3 rounded-full bg-cyan-400 text-black font-semibold hover:bg-cyan-300 transition"
-            >
-              SABITX Store
-            </a>
-
-            <a
-              href="/cameras"
-              className="px-6 py-3 rounded-full bg-white/10 border border-white/20 hover:bg-white/20 backdrop-blur-md transition"
-            >
-              Cameras
-            </a>
-
-            <a
-              href="/override"
-              className="px-6 py-3 rounded-full bg-white/10 border border-white/20 hover:bg-white/20 backdrop-blur-md transition"
-            >
-              Override
-            </a>
-          </motion.div>
-        )}
-      </motion.div>
+      {/* MODULES SECTION */}
+      <div className="relative z-30 w-full bg-black/90 backdrop-blur-xl pt-32 pb-40">
+        <ModuleGrid />
+      </div>
     </main>
   );
 }

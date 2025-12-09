@@ -1,0 +1,38 @@
+/* --------------------------------------------------------
+   SABITX ANIMATION SUITE
+   -------------------------------------------------------- */
+
+/* Ambient floating drift */
+@keyframes drift {
+  0% { transform: translate3d(0px, 0px, 0px) scale(1); opacity: 0.6; }
+  50% { transform: translate3d(6px, -6px, 0px) scale(1.04); opacity: 0.85; }
+  100% { transform: translate3d(0px, 0px, 0px) scale(1); opacity: 0.6; }
+}
+
+/* Soft pulse (used by halo layers) */
+@keyframes slowPulse {
+  0% { opacity: 0.04; transform: scale(1); }
+  50% { opacity: 0.12; transform: scale(1.1); }
+  100% { opacity: 0.04; transform: scale(1); }
+}
+
+/* Micro-shake on proximity or hover */
+@keyframes microShake {
+  0%, 100% { transform: translate(0, 0); }
+  25% { transform: translate(1px, -1px); }
+  50% { transform: translate(-1px, 1px); }
+  75% { transform: translate(1px, 1px); }
+}
+
+/* Gate expansion (lock ripple → OS opening) */
+@keyframes unlockExpand {
+  0% { transform: scale(1); opacity: 0.4; }
+  70% { transform: scale(4); opacity: 0.1; }
+  100% { transform: scale(6); opacity: 0; }
+}
+
+/* Scroll fade for module rows */
+@keyframes rowReveal {
+  0% { opacity: 0; transform: translateY(30px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
