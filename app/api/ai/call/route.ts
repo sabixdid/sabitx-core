@@ -44,14 +44,16 @@ export async function POST(req: Request) {
   // Valid routing
   const route = operatorConfig.routing.routes[routeKey];
 
+  // Dial routes ALWAYS have whisper + number
   if (route.action === "dial") {
-    twiml.say(route.whisper);
+    twiml.say((route as any).whisper);
     const dial = twiml.dial();
-    dial.number(route.number);
+    dial.number((route as any).number);
   }
 
+  // "Say" routes only have message
   if (route.action === "say") {
-    twiml.say(route.message);
+    twiml.say((route as any).message);
   }
 
   return new NextResponse(twiml.toString(), {
