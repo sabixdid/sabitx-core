@@ -23,18 +23,16 @@ export async function POST(req: Request) {
   }
 
   // Routing detection
-  let routeKey: string | null = null;
+  let routeKey: keyof typeof operatorConfig.routing.routes | null = null;
 
-  for (const [keyword, target] of Object.entries(
-    operatorConfig.routing.keywords
-  )) {
+  for (const [keyword, target] of Object.entries(operatorConfig.routing.keywords)) {
     if (speech.includes(keyword.toLowerCase())) {
-      routeKey = target as string;
+      routeKey = target as keyof typeof operatorConfig.routing.routes;
       break;
     }
   }
 
-  // Fallback response
+  // Fallback if nothing matched
   if (!routeKey) {
     twiml.say(operatorConfig.voice.noMatch);
     twiml.redirect("/api/ai/call");
@@ -43,21 +41,5 @@ export async function POST(req: Request) {
     });
   }
 
-  const route = operatorConfig.routing.routes[routeKey];
-
-  // Store routing → dial out
-  if (route.action === "dial") {
-    twiml.say(route.whisper);
-    const dial = twiml.dial();
-    dial.number(route.number);
-  }
-
-  // Vendor/operator → respond only
-  if (route.action === "say") {
-    twiml.say(route.message);
-  }
-
-  return new NextResponse(twiml.toString(), {
-    headers: { "Content-Type": "text/xml" }
-  });
-}
+  // FIXED INDEX ACCESS
+  cons
