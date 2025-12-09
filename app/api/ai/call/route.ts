@@ -32,7 +32,7 @@ export async function POST(req: Request) {
     }
   }
 
-  // Fallback if nothing matched
+  // Fallback if no match
   if (!routeKey) {
     twiml.say(operatorConfig.voice.noMatch);
     twiml.redirect("/api/ai/call");
@@ -41,5 +41,20 @@ export async function POST(req: Request) {
     });
   }
 
-  // FIXED INDEX ACCESS
-  cons
+  // Valid routing
+  const route = operatorConfig.routing.routes[routeKey];
+
+  if (route.action === "dial") {
+    twiml.say(route.whisper);
+    const dial = twiml.dial();
+    dial.number(route.number);
+  }
+
+  if (route.action === "say") {
+    twiml.say(route.message);
+  }
+
+  return new NextResponse(twiml.toString(), {
+    headers: { "Content-Type": "text/xml" }
+  });
+}
