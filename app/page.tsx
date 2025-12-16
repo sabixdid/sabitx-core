@@ -1,89 +1,103 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
-import ParallaxLayer from "./components/ParallaxLayer";
-import LockCore from "./components/LockCore";
-import ModuleGrid from "./components/ModuleGrid";
+import { motion } from "framer-motion";
 
 export default function Home() {
-  const { scrollYProgress } = useScroll();
-
-  // Crest fade + scale when scrolling
-  const crestScale = useTransform(scrollYProgress, [0, 1], [1, 1.25]);
-  const crestOpacity = useTransform(scrollYProgress, [0, 1], [0.14, 0.05]);
-
-  // Headline motion
-  const titleOpacity = useTransform(scrollYProgress, [0, 0.2], [1, 0]);
-  const titleY = useTransform(scrollYProgress, [0, 0.2], [0, -60]);
-
   return (
-    <main className="relative w-full min-h-screen bg-black overflow-hidden text-white">
+    <main className="relative min-h-screen bg-black text-white overflow-hidden px-6">
 
-      {/* BACKGROUND CREST (PARALLAX REACTIVE) */}
-      <motion.div
-        style={{ scale: crestScale, opacity: crestOpacity }}
-        className="pointer-events-none fixed inset-0 flex items-center justify-center z-0"
-      >
-        <img
-          src="/sabitx/crest-square.png"
-          className="w-[60vw] max-w-[900px] opacity-20 select-none"
-        />
-      </motion.div>
+      {/* AMBIENT BACKGROUND */}
+      <div className="pointer-events-none absolute inset-0">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.04),transparent_60%)]" />
+        <div className="absolute inset-0 opacity-[0.035] bg-[url('/noise.png')]" />
+      </div>
 
-      {/* PARALLAX FLOATING LAYERS */}
-      <ParallaxLayer
-        img="/sabitx/noise.png"
-        speed={0.02}
-        opacity={0.2}
-        scale={1.8}
-      />
-      <ParallaxLayer
-        img="/sabitx/aura.png"
-        speed={0.05}
-        opacity={0.15}
-        scale={1.2}
-      />
+      {/* HERO */}
+      <section className="relative z-10 min-h-screen flex flex-col items-center justify-center text-center">
 
-      {/* HERO SECTION */}
-      <section className="relative z-20 h-[125vh] flex flex-col items-center justify-center text-center px-6">
-
-        {/* TITLE */}
         <motion.h1
-          style={{ opacity: titleOpacity, y: titleY }}
-          className="text-[2.3rem] md:text-[3.2rem] font-light max-w-4xl leading-tight tracking-tight"
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1.1, ease: [0.16, 1, 0.3, 1] }}
+          className="text-6xl md:text-8xl font-extrabold tracking-tight"
         >
-          SABIT X is an operator-grade system for survival, automation, and luxury.
+          SABITX
         </motion.h1>
 
-        {/* SUBTEXT */}
         <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 0.9, y: 0 }}
-          transition={{ delay: 0.8, duration: 0.6 }}
-          className="mt-4 text-neutral-300 text-lg tracking-wide"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.4, duration: 1 }}
+          className="mt-6 text-xl md:text-2xl text-neutral-400"
         >
-          Still Transmitting.
+          Operating System
         </motion.p>
 
-        {/* LOCK INTERFACE */}
-        <LockCore />
-
-        {/* INSTRUCTION */}
         <motion.p
-          initial={{ opacity: 0, y: 25 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1.2, duration: 0.6 }}
-          className="mt-8 tracking-widest text-neutral-400 uppercase text-[0.75rem]"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.7, duration: 1 }}
+          className="mt-4 text-sm text-neutral-500 max-w-xl"
         >
-          Scroll to access modules
+          Unified access to systems already in motion.
         </motion.p>
+
       </section>
 
-      {/* MODULES SECTION */}
-      <div className="relative z-30 w-full bg-black/90 backdrop-blur-xl pt-32 pb-40">
-        <ModuleGrid />
-      </div>
+      {/* CHANNELS */}
+      <section className="relative z-10 pb-32 max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+        <Channel title="Vault" desc="Documents • Exhibits • Case Files" href="https://vault.sabitx.com" />
+        <Channel title="Store" desc="Order • Pay • Pickup" href="https://store.sabitx.com" />
+        <Channel title="Operator" desc="Cameras • Dashboards • Control" href="https://operator.sabitx.com" />
+        <Channel title="Systems" desc="Infrastructure • Monitoring" href="https://systems.sabitx.com" />
+        <Channel title="Mesh" desc="Knowledge • Canon • Signal" href="https://mesh.sabitx.com" />
+        <Channel title="Employment" desc="Roles • Access • Alignment" href="https://sabitinc.com" />
+
+      </section>
+
+      {/* FOOTER */}
+      <footer className="relative z-10 pb-10 text-center text-xs tracking-wide text-neutral-600">
+        SABITX PORTAL • sabitx.com
+      </footer>
+
     </main>
+  );
+}
+
+function Channel({
+  title,
+  desc,
+  href,
+}: {
+  title: string;
+  desc: string;
+  href: string;
+}) {
+  return (
+    <motion.a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.6, ease: "easeOut" }}
+      className="group relative border border-neutral-800 rounded-xl p-6 hover:border-neutral-500 transition-colors"
+    >
+      <div className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity bg-[linear-gradient(120deg,transparent,rgba(255,255,255,0.04),transparent)]" />
+
+      <div className="relative flex flex-col space-y-3">
+        <h2 className="text-xl font-semibold tracking-wide">
+          {title}
+        </h2>
+        <p className="text-sm text-neutral-500">
+          {desc}
+        </p>
+        <span className="text-xs tracking-wide text-neutral-400 group-hover:text-white transition-colors">
+          Enter →
+        </span>
+      </div>
+    </motion.a>
   );
 }
