@@ -2,8 +2,9 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "SABITX CORE",
-  description: "Operator-grade system interface.",
+  title: "SABITX | Systems in Motion",
+  description:
+    "Operational infrastructure for command, execution, knowledge, evidence, retail, and signal.",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
