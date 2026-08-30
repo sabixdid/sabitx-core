@@ -147,6 +147,43 @@ export default function Home() {
         </motion.div>
       </section>
 
+      <section className="relative z-10 mx-auto max-w-7xl px-6 py-8 md:px-10">
+        <motion.div
+          initial={{ opacity: 0, y: 14 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
+          className="flex flex-col gap-8 border-t border-neutral-900 pt-8 md:flex-row md:items-end md:justify-between"
+        >
+          <div>
+            <p className="text-[10px] tracking-[0.3em] text-neutral-600">
+              FIELD TOOL // CAPTURE
+            </p>
+            <h2 className="mt-3 text-2xl font-medium tracking-[-0.025em]">
+              Pocket
+            </h2>
+            <p className="mt-3 max-w-xl text-sm leading-6 text-neutral-500">
+              A lightweight capture layer for conversations, notes, and searchable context.
+            </p>
+          </div>
+
+          <div className="flex flex-col items-start gap-3 md:items-end">
+            <a
+              href="https://heypocket.com/12120567"
+              target="_blank"
+              rel="noopener noreferrer sponsored"
+              className="inline-flex items-center gap-3 border border-neutral-800 px-5 py-3 text-[10px] font-medium tracking-[0.22em] text-neutral-300 transition hover:border-neutral-500 hover:text-white"
+            >
+              VIEW POCKET
+              <span>↗</span>
+            </a>
+            <span className="text-[8px] tracking-[0.18em] text-neutral-700">
+              AFFILIATE LINK // SABITX MAY RECEIVE A COMMISSION
+            </span>
+          </div>
+        </motion.div>
+      </section>
+
       <section id="system-layers" className="relative z-10 mx-auto max-w-7xl px-6 py-24 md:px-10 md:py-32">
         <div className="mb-10 flex items-end justify-between gap-6 border-b border-neutral-900 pb-5">
           <div>
