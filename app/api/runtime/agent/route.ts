@@ -1,4 +1,4 @@
-import { GET as readAgentRoute, POST as runAgentRoute } from "@/app/api/agent/route";
+import { configureRuntimeModels } from "@/app/lib/sabitx-runtime-config";
 import { withVercelGatewayCredentials } from "@/app/lib/vercel-runtime-auth";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -7,8 +7,13 @@ export const maxDuration = 120;
 export const dynamic = "force-dynamic";
 
 export async function POST(request: NextRequest) {
+  configureRuntimeModels();
+
   try {
-    return await withVercelGatewayCredentials(() => runAgentRoute(request));
+    return await withVercelGatewayCredentials(async () => {
+      const { POST: runAgentRoute } = await import("@/app/api/agent/route");
+      return runAgentRoute(request);
+    });
   } catch (error) {
     const detail =
       error instanceof Error ? error.message : "Gateway authentication failed.";
@@ -20,5 +25,11 @@ export async function POST(request: NextRequest) {
 }
 
 export function GET() {
-  return readAgentRoute();
+  return NextResponse.json(
+    { error: "Use POST to create a run." },
+    {
+      status: 405,
+      headers: { Allow: "POST", "Cache-Control": "no-store" },
+    }
+  );
 }
