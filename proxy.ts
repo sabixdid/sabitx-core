@@ -16,13 +16,9 @@ export function proxy(request: NextRequest) {
     .toLowerCase();
   const { pathname } = request.nextUrl;
 
-  // Bridge Vercel's request-scoped OIDC token into the existing agent pipeline.
+  // Bridge Vercel's request-scoped OIDC token into the agent pipeline.
   if (pathname === "/api/agent") {
     return rewriteTo(request, "/api/runtime/agent");
-  }
-
-  if (pathname === "/api/agent/self-test") {
-    return rewriteTo(request, "/api/runtime/self-test");
   }
 
   if (pathname === "/api/status") {
