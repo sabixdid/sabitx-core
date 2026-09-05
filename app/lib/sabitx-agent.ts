@@ -1,9 +1,11 @@
 import { randomUUID } from "node:crypto";
+import { getGatewayCredential } from "./vercel-runtime-auth";
+import { DEFAULT_ARCHITECT_MODEL, DEFAULT_OPERATOR_MODEL } from "./sabitx-runtime-config";
 
 export const ARCHITECT_MODEL =
-  process.env.SABITX_ARCHITECT_MODEL || "openai/gpt-5.6-sol";
+  process.env.SABITX_ARCHITECT_MODEL || DEFAULT_ARCHITECT_MODEL;
 export const OPERATOR_MODEL =
-  process.env.SABITX_OPERATOR_MODEL || "anthropic/claude-sonnet-5";
+  process.env.SABITX_OPERATOR_MODEL || DEFAULT_OPERATOR_MODEL;
 
 const GATEWAY_URL = "https://ai-gateway.vercel.sh/v1/chat/completions";
 const GATEWAY_TIMEOUT_MS = 55_000;
@@ -96,11 +98,11 @@ Do not claim an external action was completed unless the provided specification 
 Do not add generic advice or expand the project unnecessarily.`;
 
 export function gatewayIsConfigured() {
-  return Boolean(process.env.AI_GATEWAY_API_KEY || process.env.VERCEL_OIDC_TOKEN);
+  return Boolean(getGatewayCredential());
 }
 
 function getGatewayToken() {
-  return process.env.AI_GATEWAY_API_KEY || process.env.VERCEL_OIDC_TOKEN;
+  return getGatewayCredential();
 }
 
 function readMessageContent(content: GatewayContent) {
@@ -178,7 +180,7 @@ async function gatewayRequest(
   };
 }
 
-async function callGateway(
+export async function callGateway(
   model: string,
   messages: GatewayMessage[],
   maxTokens: number,
@@ -201,7 +203,7 @@ async function callGateway(
   }
 }
 
-function extractJsonObject(raw: string) {
+export function extractJsonObject(raw: string) {
   const cleaned = raw
     .replace(/^```(?:json)?\s*/i, "")
     .replace(/\s*```$/i, "")
@@ -236,7 +238,7 @@ function stringArray(value: unknown, field: string) {
   return items;
 }
 
-function validateExecutionSpec(value: unknown): ExecutionSpec {
+export function validateExecutionSpec(value: unknown): ExecutionSpec {
   if (!value || typeof value !== "object" || Array.isArray(value)) {
     throw new Error("Architect output must be a JSON object.");
   }

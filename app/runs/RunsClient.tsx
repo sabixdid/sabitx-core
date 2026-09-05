@@ -1,8 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useMemo, useSyncExternalStore } from "react";
 import styles from "../run/runtime.module.css";
+import CodingJobs from "../run/CodingJobs";
 
 type StoredRun = {
   id: string;
@@ -16,23 +17,34 @@ type StoredRun = {
 
 const STORAGE_KEY = "sabitx_runs_v1";
 
-export default function RunsClient() {
-  const [runs, setRuns] = useState<StoredRun[]>([]);
+function subscribeToRuns(onChange: () => void) {
+  window.addEventListener("storage", onChange);
+  window.addEventListener("sabitx-runs-changed", onChange);
+  return () => {
+    window.removeEventListener("storage", onChange);
+    window.removeEventListener("sabitx-runs-changed", onChange);
+  };
+}
+function storedRuns() {
+  try { return window.localStorage.getItem(STORAGE_KEY) || "[]"; }
+  catch { return "[]"; }
+}
 
-  useEffect(() => {
+export default function RunsClient() {
+  const raw = useSyncExternalStore(subscribeToRuns, storedRuns, () => "[]");
+  const runs = useMemo<StoredRun[]>(() => {
     try {
-      const parsed = JSON.parse(
-        window.localStorage.getItem(STORAGE_KEY) || "[]"
-      ) as StoredRun[];
-      setRuns(Array.isArray(parsed) ? parsed : []);
-    } catch {
-      setRuns([]);
-    }
-  }, []);
+      const parsed: unknown = JSON.parse(raw);
+      return Array.isArray(parsed) ? parsed.filter((run): run is StoredRun =>
+        !!run && typeof run.id === "string" && typeof run.state === "string" &&
+        typeof run.objective === "string" && typeof run.createdAt === "string" &&
+        typeof run.operatorPlan === "string") : [];
+    } catch { return []; }
+  }, [raw]);
 
   function clearRuns() {
     window.localStorage.removeItem(STORAGE_KEY);
-    setRuns([]);
+    window.dispatchEvent(new Event("sabitx-runs-changed"));
   }
 
   return (
@@ -53,16 +65,18 @@ export default function RunsClient() {
       </header>
 
       <section className={styles.hero}>
-        <div className={styles.kicker}>LOCAL RUN REGISTER</div>
+        <div className={styles.kicker}>RUN REGISTER</div>
         <h1>
-          VERIFIED STATE.
-          <span>NO CLOUD ARCHIVE YET.</span>
+          WORK. RECORDED.
+          <span>RESULTS YOU CAN INSPECT.</span>
         </h1>
         <p>
-          This register stays in the current browser. Server-side persistence and
-          Vault grants remain separate by design.
+          Coding jobs, approvals and verification results are saved privately.
+          Earlier planning runs remain in this browser below.
         </p>
       </section>
+
+      <CodingJobs historyOnly />
 
       <section className={styles.result}>
         <div className={styles.resultHeader}>

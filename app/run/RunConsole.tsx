@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import type { FormEvent } from "react";
 import styles from "./runtime.module.css";
+import CodingJobs from "./CodingJobs";
 
 type ExecutionSpec = {
   objective: string;
@@ -70,6 +71,7 @@ export default function RunConsole({
   surface?: "RUN" | "ASK" | "OPERATOR";
 }) {
   const [accessKey, setAccessKey] = useState("");
+  const [mode, setMode] = useState<"coding" | "planning">("coding");
   const [objective, setObjective] = useState("");
   const [run, setRun] = useState<AgentRun | null>(null);
   const [status, setStatus] = useState<StatusPayload | null>(null);
@@ -182,11 +184,10 @@ export default function RunConsole({
         </div>
         <h1>
           SEND THE SIGNAL.
-          <span>RETURN WITH A PLAN.</span>
+          <span>{mode === "coding" ? "REVIEW. APPROVE. VERIFY." : "RETURN WITH A PLAN."}</span>
         </h1>
         <p>
-          Architect intent → validate the specification → operator sequence →
-          verified state. External actions remain behind explicit approval gates.
+          {mode === "coding" ? "Turn a small coding objective into tested changes. Review the result before approving a new branch." : "Architect intent → validate the specification → operator sequence → planned state."}
         </p>
 
         <div className={styles.statusRow} aria-label="System status">
@@ -200,6 +201,11 @@ export default function RunConsole({
         </div>
       </section>
 
+      <div className={styles.modeControls} aria-label="Run mode">
+        <button type="button" aria-pressed={mode === "coding"} onClick={() => setMode("coding")}>Coding job</button>
+        <button type="button" aria-pressed={mode === "planning"} onClick={() => { setMode("planning"); try { setAccessKey(window.sessionStorage.getItem("sabitx_clearance") || ""); } catch { /* Optional storage. */ } }}>Planning only</button>
+      </div>
+      {mode === "coding" ? <CodingJobs /> : <>
       <section className={styles.commandGrid}>
         <form className={styles.console} onSubmit={submit}>
           <div className={styles.consoleHeader}>
@@ -325,6 +331,7 @@ export default function RunConsole({
           </footer>
         </section>
       ) : null}
+      </>}
     </main>
   );
 }
