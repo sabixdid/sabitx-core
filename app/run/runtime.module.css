@@ -14,6 +14,29 @@
   isolation: isolate;
 }
 
+.modeControls, .coding { width: min(1180px, calc(100% - 2rem)); margin: 0 auto 2rem; }
+.modeControls, .codingActions { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+.modeControls button { background: transparent; border: 1px solid var(--line); padding: 0.8rem 1.2rem; color: var(--muted); font: inherit; cursor: pointer; }
+.modeControls button[aria-pressed="true"] { background: var(--signal); color: #071018; }
+.modeControls button:focus-visible, .coding button:focus-visible, .coding summary:focus-visible, .coding a:focus-visible { outline: 2px solid var(--signal); outline-offset: 4px; }
+.coding { display: grid; gap: 1.25rem; padding-bottom: 3rem; }
+.coding h2 { font-size: 1.5rem; margin: 0 0 0.75rem; }
+.coding p { color: var(--muted); line-height: 1.6; font-size: 1rem; }
+.coding .console label { font-size: 0.875rem; }
+.coding textarea { min-height: 8rem; }
+.coding details { border-top: 1px solid var(--line); padding: 1rem 0; }
+.coding summary { cursor: pointer; font-size: 0.95rem; overflow-wrap: anywhere; }
+.coding a { color: var(--signal); }
+.codingActions { margin-top: 1.5rem; }
+.coding .codingActions button { font-size: 0.875rem; letter-spacing: 0.02em; }
+.codingJobList { list-style: none; padding: 0; margin: 0; display: grid; gap: 0.75rem; }
+.codingJobList button { width: 100%; text-align: left; display: grid; gap: 0.5rem; padding: 1rem; background: rgba(255,255,255,0.035); color: #fff; font: inherit; }
+.coding .codingJobList button { letter-spacing: normal; font-size: 0.875rem; }
+.codingJobList span, .codingMeta { font-size: 0.875rem; color: var(--muted); }
+.codeDiff { white-space: pre; overflow: auto; max-height: 32rem; background: #05080c; padding: 1rem; font-size: 0.875rem; line-height: 1.5; border: 1px solid var(--line); }
+.codingReview { min-width: 0; }
+@media (max-width: 600px) { .coding .codingActions button { width: 100%; } .modeControls { margin-top: 0; } }
+
 .runtime *,
 .runtime *::before,
 .runtime *::after {

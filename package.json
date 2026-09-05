@@ -6,13 +6,20 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "test": "node --import tsx --test tests/*.test.ts",
+    "db:migrate": "node --env-file=.env.local scripts/migrate-coding.mjs",
+    "test:storage": "node --env-file=.env.local --import tsx tests/coding-store.integration.mts"
   },
   "dependencies": {
+    "@neondatabase/serverless": "^1.1.0",
     "@tailwindcss/aspect-ratio": "^0.4.2",
     "@tailwindcss/forms": "^0.5.10",
     "@tailwindcss/typography": "^0.5.19",
+    "@vercel/connect": "^2.0.2",
+    "@vercel/sandbox": "^3.2.1",
     "clsx": "^2.1.1",
+    "diff": "^9.0.0",
     "framer-motion": "^12.23.25",
     "next": "^16.0.7",
     "react": "^19.2.1",
@@ -23,13 +30,15 @@
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
+    "@types/diff": "^7.0.2",
     "@types/node": "^20.19.25",
     "@types/react": "^19.2.7",
     "@types/react-dom": "^19",
     "babel-plugin-react-compiler": "1.0.0",
     "eslint": "^9",
-    "eslint-config-next": "16.0.6",
+    "eslint-config-next": "^16.3.4",
     "tailwindcss": "^4.1.17",
+    "tsx": "^4.23.13",
     "typescript": "^5"
   }
 }

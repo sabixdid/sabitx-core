@@ -17,8 +17,16 @@ export async function GET() {
       runtime: "online",
       signal: gatewayReady ? "active" : "degraded",
       clearance: "required",
-      version: "run-v1",
-      modules: ["ask", "operator", "vault", "runs"],
+      version: "run-v2",
+      modules: ["ask", "operator", "vault", "runs", "coding"],
+      coding: {
+        configuration: gatewayReady && !!process.env.DATABASE_URL && /^[a-f0-9]{64}$/i.test(process.env.SABITX_RUN_KEY_SHA256 || "") ? "present" : "required",
+        workflow: "propose → isolated build → approval → verified branch",
+        scope: "SABITX Core UI and documentation",
+        storage: "private",
+        approvalRequired: true,
+        automaticMerge: false,
+      },
       agent: {
         state: gatewayReady ? "ready" : "configuration-required",
         pipeline: "architect → operator → verification",
