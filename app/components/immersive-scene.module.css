@@ -1,0 +1,255 @@
+.scene {
+  --pointer-x: 0deg;
+  --pointer-y: 0deg;
+  --scroll-depth: 0px;
+  position: relative;
+  min-width: 0;
+  height: 510px;
+  border: 1px solid #2c2c28;
+  border-radius: 8px;
+  background:
+    radial-gradient(ellipse at 75% 70%, #29170c44, transparent 62%), #111110;
+  overflow: hidden;
+}
+.caption,
+.bottom {
+  position: absolute;
+  left: 26px;
+  right: 26px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  z-index: 5;
+}
+.caption {
+  top: 25px;
+  font:
+    8px ui-monospace,
+    monospace;
+  letter-spacing: 0.11em;
+  color: #99958d;
+}
+.caption > span:last-child {
+  color: #ff804f;
+}
+.world {
+  position: absolute;
+  inset: 64px 0 58px;
+  perspective: 1000px;
+}
+.assembly {
+  position: absolute;
+  left: 50%;
+  top: 45%;
+  width: 240px;
+  height: 270px;
+  margin-left: -120px;
+  margin-top: -135px;
+  transform-style: preserve-3d;
+  transform: translateY(var(--scroll-depth))
+    rotateX(calc(11deg + var(--pointer-y)))
+    rotateY(calc(-23deg + var(--pointer-x))) rotateZ(-7deg);
+  transition: transform 0.24s ease-out;
+}
+.plane {
+  position: absolute;
+  inset: 0;
+  border: 1px solid #ffffff30;
+  border-radius: 7px;
+  background: linear-gradient(140deg, #242420bb, #121210bb);
+  backface-visibility: hidden;
+}
+.plane > span {
+  position: absolute;
+  top: 18px;
+  left: 19px;
+  font:
+    9px ui-monospace,
+    monospace;
+  letter-spacing: 0.12em;
+  color: #a9a69d;
+}
+.back {
+  transform: translate3d(-40px, -8px, -90px);
+  border-color: #5c5544;
+  box-shadow:
+    -8px 10px 0 #090909,
+    -9px 11px 0 #ffffff15;
+}
+.back i {
+  display: block;
+  width: 55%;
+  height: 1px;
+  background: #88816a66;
+  margin: 66px 24px -38px;
+}
+.back i:nth-of-type(2) {
+  width: 40%;
+}
+.back i:nth-of-type(3) {
+  width: 48%;
+}
+.middle {
+  transform: translate3d(0, 0, -10px);
+  background: #181813dd;
+  border-color: #aa643888;
+}
+.middle b {
+  position: absolute;
+  left: 22px;
+  bottom: 20px;
+  font:
+    40px Arial,
+    sans-serif;
+  color: #615744;
+}
+.cross {
+  position: absolute;
+  left: 30px;
+  top: 45px;
+  width: 215px;
+  height: 215px;
+  transform: translate3d(0, 0, 48px);
+  transform-style: preserve-3d;
+}
+.cross i {
+  position: absolute;
+  left: 42%;
+  top: 0;
+  width: 18%;
+  height: 100%;
+  background: linear-gradient(90deg, #ff5a1f, #ff8245);
+  transform: rotate(45deg);
+  border: 1px solid #ff9d65;
+  border-radius: 3px;
+  box-shadow:
+    1px 1px #aa390e,
+    2px 2px #aa390e,
+    3px 3px #aa390e,
+    4px 4px #aa390e,
+    5px 5px #aa390e,
+    6px 6px #aa390e,
+    7px 7px #aa390e,
+    8px 8px #8b2d0b,
+    9px 9px #8b2d0b,
+    10px 10px 24px #0008;
+}
+.cross i:last-child {
+  transform: rotate(-45deg);
+}
+.front {
+  inset: auto -60px -30px 25px;
+  height: 98px;
+  transform: translateZ(100px);
+  background: linear-gradient(110deg, #292820f2, #171713f5);
+  box-shadow: 0 20px 40px #0007;
+  border-color: #ffffff40;
+}
+.front > span {
+  top: 13px;
+  font-size: 8px;
+  color: #ff935e;
+}
+.front strong {
+  position: absolute;
+  top: 31px;
+  left: 19px;
+  color: #f5f4ed;
+  font:
+    500 23px Arial,
+    sans-serif;
+  letter-spacing: -0.04em;
+}
+.front small {
+  position: absolute;
+  top: 66px;
+  left: 19px;
+  color: #b1ac9d;
+  font:
+    9px Arial,
+    sans-serif;
+}
+.floor {
+  position: absolute;
+  left: 15%;
+  right: 10%;
+  bottom: 5%;
+  height: 100px;
+  border: 1px solid #55534533;
+  background: repeating-linear-gradient(
+    90deg,
+    transparent 0 32px,
+    #77736312 32px 33px
+  );
+  transform: rotateX(75deg) rotateZ(-10deg);
+  box-shadow: 0 0 60px #000;
+  z-index: -1;
+}
+.bottom {
+  bottom: 22px;
+  font:
+    10px Arial,
+    sans-serif;
+  color: #a6a298;
+}
+.bottom button {
+  border: 0;
+  border-bottom: 1px solid #4a463c;
+  background: transparent;
+  color: #b9b5a9;
+  padding: 9px 0;
+  font:
+    10px Arial,
+    sans-serif;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+}
+.bottom button:hover {
+  color: #ff804f;
+}
+.bottom button:focus-visible {
+  outline: 2px solid #ff804f;
+  outline-offset: 5px;
+}
+@media (max-width: 1000px) {
+  .scene {
+    height: 460px;
+  }
+  .assembly {
+    scale: 0.88;
+  }
+  .caption {
+    left: 19px;
+    right: 19px;
+    font-size: 7px;
+  }
+}
+@media (max-width: 650px) {
+  .scene {
+    height: 440px;
+  }
+  .assembly {
+    scale: 0.9;
+  }
+  .caption {
+    font-size: 8px;
+  }
+  .world {
+    inset: 52px 0;
+  }
+  .bottom {
+    font-size: 10px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .assembly {
+    transform: rotateX(11deg) rotateY(-23deg) rotateZ(-7deg) !important;
+    transition: none !important;
+  }
+  .bottom button {
+    display: none;
+  }
+}

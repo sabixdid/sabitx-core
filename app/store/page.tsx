@@ -10,7 +10,7 @@ export default function StoreLanding() {
 
       <a
         href="https://store.sabitx.com"
-        className="px-8 py-3 bg-cyan-400 text-black rounded-full font-semibold tracking-wide hover:bg-cyan-300 transition"
+        className="px-8 py-3 bg-orange-500 text-black rounded-full font-semibold tracking-wide hover:bg-orange-400 transition"
       >
         ENTER STORE
       </a>

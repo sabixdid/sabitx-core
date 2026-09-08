@@ -1,41 +1,132 @@
 .runtime {
   --line: rgba(255, 255, 255, 0.13);
-  --muted: rgba(235, 242, 255, 0.58);
-  --quiet: rgba(235, 242, 255, 0.36);
-  --signal: #9ed9ff;
+  --muted: #c1bbaf;
+  --quiet: #a29c90;
+  --signal: #ff6b35;
   position: relative;
   min-height: 100vh;
   overflow: hidden;
-  background:
-    radial-gradient(circle at 78% 16%, rgba(76, 66, 183, 0.2), transparent 31rem),
-    radial-gradient(circle at 12% 75%, rgba(14, 129, 184, 0.13), transparent 34rem),
-    #030405;
-  color: #f7f9ff;
+  background: #090909;
+  color: #f1eee7;
   isolation: isolate;
 }
 
-.modeControls, .coding { width: min(1180px, calc(100% - 2rem)); margin: 0 auto 2rem; }
-.modeControls, .codingActions { display: flex; flex-wrap: wrap; gap: 0.75rem; }
-.modeControls button { background: transparent; border: 1px solid var(--line); padding: 0.8rem 1.2rem; color: var(--muted); font: inherit; cursor: pointer; }
-.modeControls button[aria-pressed="true"] { background: var(--signal); color: #071018; }
-.modeControls button:focus-visible, .coding button:focus-visible, .coding summary:focus-visible, .coding a:focus-visible { outline: 2px solid var(--signal); outline-offset: 4px; }
-.coding { display: grid; gap: 1.25rem; padding-bottom: 3rem; }
-.coding h2 { font-size: 1.5rem; margin: 0 0 0.75rem; }
-.coding p { color: var(--muted); line-height: 1.6; font-size: 1rem; }
-.coding .console label { font-size: 0.875rem; }
-.coding textarea { min-height: 8rem; }
-.coding details { border-top: 1px solid var(--line); padding: 1rem 0; }
-.coding summary { cursor: pointer; font-size: 0.95rem; overflow-wrap: anywhere; }
-.coding a { color: var(--signal); }
-.codingActions { margin-top: 1.5rem; }
-.coding .codingActions button { font-size: 0.875rem; letter-spacing: 0.02em; }
-.codingJobList { list-style: none; padding: 0; margin: 0; display: grid; gap: 0.75rem; }
-.codingJobList button { width: 100%; text-align: left; display: grid; gap: 0.5rem; padding: 1rem; background: rgba(255,255,255,0.035); color: #fff; font: inherit; }
-.coding .codingJobList button { letter-spacing: normal; font-size: 0.875rem; }
-.codingJobList span, .codingMeta { font-size: 0.875rem; color: var(--muted); }
-.codeDiff { white-space: pre; overflow: auto; max-height: 32rem; background: #05080c; padding: 1rem; font-size: 0.875rem; line-height: 1.5; border: 1px solid var(--line); }
-.codingReview { min-width: 0; }
-@media (max-width: 600px) { .coding .codingActions button { width: 100%; } .modeControls { margin-top: 0; } }
+.modeControls,
+.coding {
+  width: min(1180px, calc(100% - 2rem));
+  margin: 0 auto 2rem;
+}
+.modeControls,
+.codingActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+.modeControls button {
+  background: transparent;
+  border: 1px solid var(--line);
+  padding: 0.8rem 1.2rem;
+  color: var(--muted);
+  font: inherit;
+  cursor: pointer;
+}
+.modeControls button[aria-pressed="true"] {
+  background: var(--signal);
+  color: #24231f;
+}
+.modeControls button:focus-visible,
+.coding button:focus-visible,
+.coding summary:focus-visible,
+.coding a:focus-visible {
+  outline: 2px solid var(--signal);
+  outline-offset: 4px;
+}
+.coding {
+  display: grid;
+  gap: 1.25rem;
+  padding-bottom: 3rem;
+}
+.coding h2 {
+  font-size: 1.5rem;
+  margin: 0 0 0.75rem;
+}
+.coding p {
+  color: var(--muted);
+  line-height: 1.6;
+  font-size: 1rem;
+}
+.coding .console label {
+  font-size: 0.875rem;
+}
+.coding textarea {
+  min-height: 8rem;
+}
+.coding details {
+  border-top: 1px solid var(--line);
+  padding: 1rem 0;
+}
+.coding summary {
+  cursor: pointer;
+  font-size: 0.95rem;
+  overflow-wrap: anywhere;
+}
+.coding a {
+  color: var(--signal);
+}
+.codingActions {
+  margin-top: 1.5rem;
+}
+.coding .codingActions button {
+  font-size: 0.875rem;
+  letter-spacing: 0.02em;
+}
+.codingJobList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 0.75rem;
+}
+.codingJobList button {
+  width: 100%;
+  text-align: left;
+  display: grid;
+  gap: 0.5rem;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.035);
+  color: #fff;
+  font: inherit;
+}
+.coding .codingJobList button {
+  letter-spacing: normal;
+  font-size: 0.875rem;
+}
+.codingJobList span,
+.codingMeta {
+  font-size: 0.875rem;
+  color: var(--muted);
+}
+.codeDiff {
+  white-space: pre;
+  overflow: auto;
+  max-height: 32rem;
+  background: #11110f;
+  padding: 1rem;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  border: 1px solid var(--line);
+}
+.codingReview {
+  min-width: 0;
+}
+@media (max-width: 600px) {
+  .coding .codingActions button {
+    width: 100%;
+  }
+  .modeControls {
+    margin-top: 0;
+  }
+}
 
 .runtime *,
 .runtime *::before,
@@ -65,7 +156,7 @@
   gap: 2rem;
   padding: 1rem clamp(1rem, 4vw, 4rem);
   border-bottom: 1px solid var(--line);
-  background: rgba(2, 3, 5, 0.76);
+  background: rgba(9, 9, 9, 0.96);
   backdrop-filter: blur(18px);
 }
 
@@ -86,8 +177,8 @@
 .rail nav a {
   color: var(--muted);
   text-decoration: none;
-  font-size: 0.64rem;
-  letter-spacing: 0.15em;
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
   transition: color 160ms ease;
 }
 
@@ -108,7 +199,7 @@
 .hero {
   width: min(1180px, calc(100% - 2rem));
   margin: 0 auto;
-  padding: clamp(5rem, 10vw, 9rem) 0 clamp(3rem, 7vw, 6rem);
+  padding: clamp(2.5rem, 5vw, 4rem) 0 2.2rem;
 }
 
 .kicker,
@@ -129,15 +220,15 @@
 .hero h1 {
   max-width: 980px;
   margin: 1.2rem 0 1rem;
-  font-size: clamp(3rem, 8vw, 7.4rem);
+  font-size: clamp(2.2rem, 4.3vw, 4.5rem);
   font-weight: 560;
-  line-height: 0.89;
+  line-height: 1.06;
   letter-spacing: -0.07em;
 }
 
 .hero h1 span {
   display: block;
-  color: rgba(255, 255, 255, 0.34);
+  color: #a29c90;
 }
 
 .hero p {
@@ -152,7 +243,7 @@
   display: flex;
   flex-wrap: wrap;
   gap: 0.7rem 2rem;
-  margin-top: 2.5rem;
+  margin-top: 1.5rem;
   color: var(--quiet);
 }
 
@@ -165,7 +256,7 @@
   margin-right: 0.6rem;
   border-radius: 999px;
   background: var(--signal);
-  box-shadow: 0 0 14px rgba(119, 207, 255, 0.8);
+  box-shadow: 0 0 14px transparent;
 }
 
 .commandGrid {
@@ -181,8 +272,14 @@
 .sequence,
 .result {
   border: 1px solid var(--line);
-  background: linear-gradient(145deg, rgba(255, 255, 255, 0.055), rgba(255, 255, 255, 0.016));
-  box-shadow: inset 0 1px rgba(255, 255, 255, 0.06), 0 36px 100px rgba(0, 0, 0, 0.33);
+  background: linear-gradient(
+    145deg,
+    rgba(255, 255, 255, 0.055),
+    rgba(255, 255, 255, 0.016)
+  );
+  box-shadow:
+    inset 0 1px rgba(255, 255, 255, 0.06),
+    0 36px 100px rgba(0, 0, 0, 0.33);
   backdrop-filter: blur(16px);
 }
 
@@ -212,7 +309,7 @@
 .console textarea {
   width: 100%;
   border: 1px solid var(--line);
-  border-radius: 0;
+  border-radius: 5px;
   background: rgba(0, 0, 0, 0.38);
   color: #fff;
   font: inherit;
@@ -251,21 +348,23 @@
 
 .console button {
   min-height: 3rem;
-  border: 1px solid rgba(158, 217, 255, 0.42);
-  border-radius: 0;
+  border: 1px solid rgba(255, 107, 53, 0.5);
+  border-radius: 5px;
   padding: 0.8rem 1.1rem;
-  background: rgba(109, 197, 255, 0.1);
-  color: #eaf7ff;
+  background: rgba(255, 107, 53, 0.12);
+  color: #f3dbc7;
   font-size: 0.68rem;
   font-weight: 700;
   letter-spacing: 0.12em;
   cursor: pointer;
-  transition: background 160ms ease, border-color 160ms ease;
+  transition:
+    background 160ms ease,
+    border-color 160ms ease;
 }
 
 .console button:hover:not(:disabled) {
-  border-color: rgba(158, 217, 255, 0.85);
-  background: rgba(109, 197, 255, 0.18);
+  border-color: #ff6b35;
+  background: rgba(255, 107, 53, 0.22);
 }
 
 .console button:disabled {
@@ -296,7 +395,9 @@
   padding: 1.3rem 1rem;
   border-bottom: 1px solid var(--line);
   color: var(--quiet);
-  transition: color 180ms ease, background 180ms ease;
+  transition:
+    color 180ms ease,
+    background 180ms ease;
 }
 
 .sequence > div:last-child {
@@ -322,8 +423,8 @@
 }
 
 .sequence .activeStep {
-  color: #e6f6ff;
-  background: linear-gradient(90deg, rgba(90, 185, 255, 0.12), transparent);
+  color: #f3dbc7;
+  background: linear-gradient(90deg, rgba(255, 107, 53, 0.12), transparent);
 }
 
 .sequence .activeStep::after {
@@ -335,7 +436,7 @@
   height: 0.42rem;
   border-radius: 999px;
   background: var(--signal);
-  box-shadow: 0 0 18px rgba(119, 207, 255, 0.95);
+  box-shadow: 0 0 18px transparent;
 }
 
 .result {
@@ -411,7 +512,7 @@
   position: relative;
   padding: 0.58rem 0 0.58rem 1.05rem;
   border-bottom: 1px solid rgba(255, 255, 255, 0.07);
-  color: rgba(242, 247, 255, 0.77);
+  color: rgba(242, 238, 227, 0.77);
   font-size: 0.86rem;
   line-height: 1.55;
 }
@@ -430,7 +531,7 @@
   margin: 1rem 0 0;
   white-space: pre-wrap;
   overflow-wrap: anywhere;
-  color: rgba(242, 247, 255, 0.82);
+  color: rgba(242, 238, 227, 0.82);
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
   font-size: 0.79rem;
   line-height: 1.7;
@@ -477,11 +578,11 @@
   }
 
   .hero {
-    padding-top: 4rem;
+    padding-top: 2.5rem;
   }
 
   .hero h1 {
-    font-size: clamp(2.7rem, 15vw, 4.4rem);
+    font-size: clamp(2.05rem, 8vw, 3.5rem);
   }
 
   .formFooter,
@@ -522,9 +623,9 @@
 .emptyState a {
   border: 0;
   background: transparent;
-  color: rgba(235, 242, 255, 0.68);
+  color: rgba(242, 238, 227, 0.68);
   font: inherit;
-  font-size: 0.64rem;
+  font-size: 0.75rem;
   letter-spacing: 0.13em;
   text-decoration: none;
   cursor: pointer;
@@ -571,7 +672,7 @@
   border-left: 1px solid var(--line);
   white-space: pre-wrap;
   overflow-wrap: anywhere;
-  color: rgba(242, 247, 255, 0.76);
+  color: rgba(242, 238, 227, 0.76);
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
   font-size: 0.77rem;
   line-height: 1.68;
@@ -615,5 +716,69 @@
 @media (max-width: 560px) {
   .registerActions {
     align-items: flex-start;
+  }
+}
+
+/* Warm workspace surfaces keep the active form close to the navigation. */
+.ambient {
+  display: none;
+}
+.rail {
+  min-height: 76px;
+}
+.rail nav a {
+  min-height: 38px;
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+}
+.console,
+.sequence,
+.result {
+  background: #151513;
+  border-radius: 8px;
+  box-shadow: none;
+  backdrop-filter: none;
+}
+.modeControls button {
+  border-radius: 5px;
+}
+.hero h1 {
+  letter-spacing: -0.055em;
+}
+.hero h1 span {
+  margin-top: 0.12em;
+}
+.hero p {
+  margin-top: 1.2rem;
+}
+.console input,
+.console textarea {
+  background: #10100e;
+  font-size: 16px;
+}
+.console input::placeholder,
+.console textarea::placeholder {
+  color: #959083;
+}
+@media (max-width: 560px) {
+  .hero,
+  .commandGrid,
+  .result,
+  .coding,
+  .modeControls {
+    width: calc(100% - 2rem);
+  }
+  .rail {
+    gap: 0.3rem;
+    padding: 0.8rem 1rem;
+  }
+  .rail nav {
+    justify-content: space-between;
+    gap: 0.65rem;
+  }
+  .rail nav a {
+    font-size: 0.68rem;
+    letter-spacing: 0.02em;
   }
 }

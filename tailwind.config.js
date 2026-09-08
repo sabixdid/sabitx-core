@@ -1,16 +1,13 @@
 /** @type {import("tailwindcss").Config} */
 module.exports = {
-  content: [
-    "./app/**/*.{js,ts,jsx,tsx}",
-    "./components/**/*.{js,ts,jsx,tsx}",
-  ],
+  content: ["./app/**/*.{js,ts,jsx,tsx}", "./components/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
       colors: {
         sabitx: {
           dark: "#000000",
           metal: "#1a1a1a",
-          glow: "#0affff",
+          glow: "#ff5a1f",
         },
       },
       backgroundImage: {

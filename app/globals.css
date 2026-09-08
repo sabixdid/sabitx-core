@@ -1,14 +1,18 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+@config "../tailwind.config.js";
 
 /* GLOBAL SABITX SIGNAL */
-html, body {
+html,
+body {
   margin: 0;
   padding: 0;
-  background: #000;
-  color: #fff;
-  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont;
+  background: #090909;
+  color: #f1eee7;
+  font-family:
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont;
 }
 
 body {
@@ -48,7 +52,9 @@ body {
 
 /* Module interaction */
 .module-card {
-  transition: transform 0.4s ease, box-shadow 0.4s ease;
+  transition:
+    transform 0.4s ease,
+    box-shadow 0.4s ease;
 }
 
 .module-card:hover {
@@ -65,18 +71,79 @@ body {
 
 /* Keyframes */
 @keyframes drift {
-  0% { transform: translate3d(0,0,0); }
-  50% { transform: translate3d(-10px, 10px, 0); }
-  100% { transform: translate3d(0,0,0); }
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(-10px, 10px, 0);
+  }
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
 }
 
 @keyframes slowPulse {
-  0% { transform: scale(1); opacity: 1; }
-  50% { transform: scale(1.03); opacity: 0.92; }
-  100% { transform: scale(1); opacity: 1; }
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.03);
+    opacity: 0.92;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
 
 @keyframes rowReveal {
-  0% { opacity: 0; transform: translateY(18px); }
-  100% { opacity: 1; transform: translateY(0); }
+  0% {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Shared brand and accessible defaults across the workspace. */
+:root {
+  --sx-paper: #f1eee7;
+  --sx-ink: #161614;
+  --sx-accent: #ff5a1f;
+  --sx-surface: #090909;
+}
+html {
+  scroll-behavior: smooth;
+}
+a {
+  color: inherit;
+}
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+:focus-visible {
+  outline: 2px solid var(--sx-accent);
+  outline-offset: 4px;
+}
+::selection {
+  background: #ff5a1f;
+  color: #090909;
+}
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .noise-overlay,
+  .crest-parallax,
+  .row-reveal {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
 }

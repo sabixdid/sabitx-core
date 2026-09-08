@@ -43,11 +43,11 @@ const MAX_STORED_RUNS = 20;
 function saveRun(run: AgentRun) {
   try {
     const existing = JSON.parse(
-      window.localStorage.getItem(STORAGE_KEY) || "[]"
+      window.localStorage.getItem(STORAGE_KEY) || "[]",
     ) as AgentRun[];
     const next = [run, ...existing.filter((item) => item.id !== run.id)].slice(
       0,
-      MAX_STORED_RUNS
+      MAX_STORED_RUNS,
     );
     window.localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
   } catch {
@@ -71,7 +71,9 @@ export default function RunConsole({
   surface?: "RUN" | "ASK" | "OPERATOR";
 }) {
   const [accessKey, setAccessKey] = useState("");
-  const [mode, setMode] = useState<"coding" | "planning">("coding");
+  const [mode, setMode] = useState<"coding" | "planning">(
+    surface === "ASK" ? "planning" : "coding",
+  );
   const [objective, setObjective] = useState("");
   const [run, setRun] = useState<AgentRun | null>(null);
   const [status, setStatus] = useState<StatusPayload | null>(null);
@@ -87,9 +89,7 @@ export default function RunConsole({
     fetch("/api/status", { cache: "no-store" })
       .then((response) => response.json())
       .then((payload: StatusPayload) => setStatus(payload))
-      .catch(() =>
-        setStatus({ runtime: "unknown", signal: "unavailable" })
-      );
+      .catch(() => setStatus({ runtime: "unknown", signal: "unavailable" }));
   }, []);
 
   const locked = useMemo(() => !accessKey.trim(), [accessKey]);
@@ -143,7 +143,7 @@ export default function RunConsole({
         }
         throw new Error(
           [payload.error, payload.detail].filter(Boolean).join(" ") ||
-            `Run failed with ${response.status}.`
+            `Run failed with ${response.status}.`,
         );
       }
 
@@ -154,7 +154,7 @@ export default function RunConsole({
     } catch (caught) {
       setPhase("idle");
       setError(
-        caught instanceof Error ? caught.message : "Runtime did not answer."
+        caught instanceof Error ? caught.message : "Runtime did not answer.",
       );
     } finally {
       window.clearTimeout(operatorTimer);
@@ -169,25 +169,32 @@ export default function RunConsole({
           SABITX
         </Link>
         <nav aria-label="Runtime navigation">
-          <Link href="/run" aria-current={surface === "RUN" ? "page" : undefined}>
+          <Link
+            href="/run"
+            aria-current={surface === "RUN" ? "page" : undefined}
+          >
             RUN
           </Link>
           <Link href="/runs">RUNS</Link>
           <Link href="/vault">VAULT</Link>
-          <a href="https://sabitinc.com">PUBLIC OPERATIONS</a>
+          <a href="https://sabitinc.com">SABIT INC</a>
         </nav>
       </header>
 
       <section className={styles.hero}>
-        <div className={styles.kicker}>
-          {surface} / EXECUTION SURFACE / {status?.version || "RUN"}
-        </div>
+        <div className={styles.kicker}>{surface} / WORKSPACE</div>
         <h1>
-          SEND THE SIGNAL.
-          <span>{mode === "coding" ? "REVIEW. APPROVE. VERIFY." : "RETURN WITH A PLAN."}</span>
+          {mode === "coding" ? "Make the next move." : "Give the idea a plan."}
+          <span>
+            {mode === "coding"
+              ? "Keep control of the result."
+              : "Make the path clear."}
+          </span>
         </h1>
         <p>
-          {mode === "coding" ? "Turn a small coding objective into tested changes. Review the result before approving a new branch." : "Architect intent → validate the specification → operator sequence → planned state."}
+          {mode === "coding"
+            ? "Turn a small coding objective into tested changes. Review the result before approving a new branch."
+            : "Describe your objective. Get a structured plan with requirements, constraints, and a practical sequence."}
         </p>
 
         <div className={styles.statusRow} aria-label="System status">
@@ -202,136 +209,167 @@ export default function RunConsole({
       </section>
 
       <div className={styles.modeControls} aria-label="Run mode">
-        <button type="button" aria-pressed={mode === "coding"} onClick={() => setMode("coding")}>Coding job</button>
-        <button type="button" aria-pressed={mode === "planning"} onClick={() => { setMode("planning"); try { setAccessKey(window.sessionStorage.getItem("sabitx_clearance") || ""); } catch { /* Optional storage. */ } }}>Planning only</button>
+        <button
+          type="button"
+          aria-pressed={mode === "coding"}
+          onClick={() => setMode("coding")}
+        >
+          Coding job
+        </button>
+        <button
+          type="button"
+          aria-pressed={mode === "planning"}
+          onClick={() => {
+            setMode("planning");
+            try {
+              setAccessKey(
+                window.sessionStorage.getItem("sabitx_clearance") || "",
+              );
+            } catch {
+              /* Optional storage. */
+            }
+          }}
+        >
+          Planning only
+        </button>
       </div>
-      {mode === "coding" ? <CodingJobs /> : <>
-      <section className={styles.commandGrid}>
-        <form className={styles.console} onSubmit={submit}>
-          <div className={styles.consoleHeader}>
-            <span>COMMAND INPUT</span>
-            <span>{locked ? "CLEARANCE REQUIRED" : "CLEARANCE HELD"}</span>
-          </div>
+      {mode === "coding" ? (
+        <CodingJobs />
+      ) : (
+        <>
+          <section className={styles.commandGrid}>
+            <form className={styles.console} onSubmit={submit}>
+              <div className={styles.consoleHeader}>
+                <span>COMMAND INPUT</span>
+                <span>{locked ? "CLEARANCE REQUIRED" : "CLEARANCE HELD"}</span>
+              </div>
 
-          <label htmlFor="clearance">Clearance key</label>
-          <input
-            id="clearance"
-            type="password"
-            autoComplete="off"
-            value={accessKey}
-            onChange={(event) => setAccessKey(event.target.value)}
-            placeholder="Enter runtime key"
-            disabled={running}
-          />
+              <label htmlFor="clearance">Clearance key</label>
+              <input
+                id="clearance"
+                type="password"
+                autoComplete="off"
+                value={accessKey}
+                onChange={(event) => setAccessKey(event.target.value)}
+                placeholder="Enter runtime key"
+                disabled={running}
+              />
 
-          <label htmlFor="objective">Objective</label>
-          <textarea
-            id="objective"
-            value={objective}
-            onChange={(event) => setObjective(event.target.value)}
-            placeholder="Example: Audit the SABITX domain architecture and return the smallest verified sequence to attach sabitx.run without breaking sabitx.com."
-            maxLength={4_000}
-            disabled={running}
-          />
+              <label htmlFor="objective">Objective</label>
+              <textarea
+                id="objective"
+                value={objective}
+                onChange={(event) => setObjective(event.target.value)}
+                placeholder="Example: Audit the SABITX domain architecture and return the smallest verified sequence to attach sabitx.run without breaking sabitx.com."
+                maxLength={4_000}
+                disabled={running}
+              />
 
-          <div className={styles.formFooter}>
-            <span>{objective.length.toLocaleString()} / 4,000</span>
-            <button type="submit" disabled={running}>
-              {running ? "RUNNING SIGNAL…" : "RUN ARCHITECT → OPERATOR"}
-            </button>
-          </div>
+              <div className={styles.formFooter}>
+                <span>{objective.length.toLocaleString()} / 4,000</span>
+                <button type="submit" disabled={running}>
+                  {running ? "RUNNING SIGNAL…" : "RUN ARCHITECT → OPERATOR"}
+                </button>
+              </div>
 
-          {error ? (
-            <div className={styles.error} role="alert">
-              {error}
-            </div>
+              {error ? (
+                <div className={styles.error} role="alert">
+                  {error}
+                </div>
+              ) : null}
+            </form>
+
+            <aside className={styles.sequence} aria-label="Execution sequence">
+              <div className={phase !== "idle" ? styles.activeStep : ""}>
+                <span>01</span>
+                <strong>SIGNAL</strong>
+                <small>Objective accepted</small>
+              </div>
+              <div
+                className={
+                  phase === "architect" ||
+                  phase === "operator" ||
+                  phase === "verified"
+                    ? styles.activeStep
+                    : ""
+                }
+              >
+                <span>02</span>
+                <strong>ARCHITECT</strong>
+                <small>Structured specification</small>
+              </div>
+              <div
+                className={
+                  phase === "operator" || phase === "verified"
+                    ? styles.activeStep
+                    : ""
+                }
+              >
+                <span>03</span>
+                <strong>OPERATOR</strong>
+                <small>Executable sequence</small>
+              </div>
+              <div className={phase === "verified" ? styles.activeStep : ""}>
+                <span>04</span>
+                <strong>VERIFY</strong>
+                <small>Schema and output state</small>
+              </div>
+            </aside>
+          </section>
+
+          {run ? (
+            <section className={styles.result} aria-live="polite">
+              <div className={styles.resultHeader}>
+                <div>
+                  <span>RUN / {run.id.slice(0, 8).toUpperCase()}</span>
+                  <h2>STATE UPDATED // PLANNED</h2>
+                </div>
+                <div>
+                  <span>{run.timingMs.total.toLocaleString()} MS</span>
+                  {remaining !== null ? (
+                    <span>{remaining} RUNS REMAIN</span>
+                  ) : null}
+                </div>
+              </div>
+
+              <div className={styles.resultGrid}>
+                <article>
+                  <span className={styles.index}>ARCHITECT SPEC</span>
+                  <h3>{run.specification.objective}</h3>
+
+                  <h4>Requirements</h4>
+                  <SignalList items={run.specification.requirements} />
+
+                  <h4>Constraints</h4>
+                  <SignalList items={run.specification.constraints} />
+
+                  <h4>Acceptance criteria</h4>
+                  <SignalList items={run.specification.acceptanceCriteria} />
+
+                  <h4>Implementation instructions</h4>
+                  <SignalList
+                    items={run.specification.implementationInstructions}
+                  />
+                </article>
+
+                <article>
+                  <span className={styles.index}>OPERATOR PLAN</span>
+                  <pre>{run.operatorPlan}</pre>
+                </article>
+              </div>
+
+              <footer className={styles.verification}>
+                <span>SCHEMA // PASSED</span>
+                <span>OPERATOR OUTPUT // RECEIVED</span>
+                <span>EXTERNAL ACTIONS // NOT EXECUTED</span>
+                <span>
+                  MODELS // {run.models.architect} + {run.models.operator}
+                </span>
+              </footer>
+            </section>
           ) : null}
-        </form>
-
-        <aside className={styles.sequence} aria-label="Execution sequence">
-          <div className={phase !== "idle" ? styles.activeStep : ""}>
-            <span>01</span>
-            <strong>SIGNAL</strong>
-            <small>Objective accepted</small>
-          </div>
-          <div
-            className={
-              phase === "architect" || phase === "operator" || phase === "verified"
-                ? styles.activeStep
-                : ""
-            }
-          >
-            <span>02</span>
-            <strong>ARCHITECT</strong>
-            <small>Structured specification</small>
-          </div>
-          <div
-            className={
-              phase === "operator" || phase === "verified"
-                ? styles.activeStep
-                : ""
-            }
-          >
-            <span>03</span>
-            <strong>OPERATOR</strong>
-            <small>Executable sequence</small>
-          </div>
-          <div className={phase === "verified" ? styles.activeStep : ""}>
-            <span>04</span>
-            <strong>VERIFY</strong>
-            <small>Schema and output state</small>
-          </div>
-        </aside>
-      </section>
-
-      {run ? (
-        <section className={styles.result} aria-live="polite">
-          <div className={styles.resultHeader}>
-            <div>
-              <span>RUN / {run.id.slice(0, 8).toUpperCase()}</span>
-              <h2>STATE UPDATED // PLANNED</h2>
-            </div>
-            <div>
-              <span>{run.timingMs.total.toLocaleString()} MS</span>
-              {remaining !== null ? <span>{remaining} RUNS REMAIN</span> : null}
-            </div>
-          </div>
-
-          <div className={styles.resultGrid}>
-            <article>
-              <span className={styles.index}>ARCHITECT SPEC</span>
-              <h3>{run.specification.objective}</h3>
-
-              <h4>Requirements</h4>
-              <SignalList items={run.specification.requirements} />
-
-              <h4>Constraints</h4>
-              <SignalList items={run.specification.constraints} />
-
-              <h4>Acceptance criteria</h4>
-              <SignalList items={run.specification.acceptanceCriteria} />
-
-              <h4>Implementation instructions</h4>
-              <SignalList items={run.specification.implementationInstructions} />
-            </article>
-
-            <article>
-              <span className={styles.index}>OPERATOR PLAN</span>
-              <pre>{run.operatorPlan}</pre>
-            </article>
-          </div>
-
-          <footer className={styles.verification}>
-            <span>SCHEMA // PASSED</span>
-            <span>OPERATOR OUTPUT // RECEIVED</span>
-            <span>EXTERNAL ACTIONS // NOT EXECUTED</span>
-            <span>
-              MODELS // {run.models.architect} + {run.models.operator}
-            </span>
-          </footer>
-        </section>
-      ) : null}
-      </>}
+        </>
+      )}
     </main>
   );
 }
