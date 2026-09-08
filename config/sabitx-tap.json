@@ -1,0 +1,19 @@
+{
+  "_note": "Single source of truth for the physical NFC/QR access stand. Values marked status:demo are placeholders and are rendered as such until replaced.",
+  "status": "demo",
+  "network": {
+    "ssid": "SABITX-GUEST",
+    "password": "REPLACE-ME-GUEST-PW",
+    "security": "WPA",
+    "hidden": false,
+    "label": "Guest network. Internet only."
+  },
+  "links": {
+    "site": { "label": "SABITX.COM", "href": "https://sabitx.com" },
+    "operator": null
+  },
+  "stand": {
+    "id": "STAND-01",
+    "location": "Desk"
+  }
+}
