@@ -1,19 +1,50 @@
 {
-  "_note": "Single source of truth for the physical NFC/QR access stand. Values marked status:demo are placeholders and are rendered as such until replaced.",
-  "status": "demo",
+  "_note": "Single source of truth for the counter access point (NFC stand + /tap page + printed Wi-Fi QR). Re-run scripts/generate-wifi-qr.mjs after editing `network`.",
+  "status": "pending-approval",
+  "store": {
+    "name": "SABIT'S MART",
+    "locationLabel": "SET LOCATION",
+    "standId": "STAND-01"
+  },
   "network": {
-    "ssid": "SABITX-GUEST",
-    "password": "REPLACE-ME-GUEST-PW",
+    "ssid": "SABITX GUEST",
+    "password": "UV4M-TQNC-FZ6C",
     "security": "WPA",
-    "hidden": false,
-    "label": "Guest network. Internet only."
+    "hidden": false
+  },
+  "promo": {
+    "enabled": true,
+    "demo": true,
+    "eyebrow": "FEATURED",
+    "title": "Demo promotion",
+    "body": "Placeholder card. Replace title, body and detail in config/sabitx-tap.json with a real offer, or set promo.enabled to false to hide this section entirely.",
+    "detail": "No real offer is running."
+  },
+  "actions": {
+    "storeInfo": {
+      "address": null,
+      "hours": null,
+      "phone": null,
+      "mapsUrl": null
+    },
+    "googleReviewUrl": null,
+    "feedback": {
+      "mode": "sms",
+      "to": null
+    },
+    "report": {
+      "mode": "sms",
+      "to": null,
+      "categories": [
+        "Pump",
+        "Restroom",
+        "Card reader",
+        "Store cleanliness",
+        "Other"
+      ]
+    }
   },
   "links": {
-    "site": { "label": "SABITX.COM", "href": "https://sabitx.com" },
-    "operator": null
-  },
-  "stand": {
-    "id": "STAND-01",
-    "location": "Desk"
+    "site": { "label": "SABITX.COM", "href": "https://sabitx.com" }
   }
 }

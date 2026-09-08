@@ -9,10 +9,12 @@ export default function CopyField({
   label,
   value,
   secret = false,
+  primary = false,
 }: {
   label: string;
   value: string;
   secret?: boolean;
+  primary?: boolean;
 }) {
   const [state, setState] = useState<State>("idle");
   const [revealed, setRevealed] = useState(!secret);
@@ -78,7 +80,11 @@ export default function CopyField({
         >
           {shown}
         </span>
-        <button type="button" className={styles.copy} onClick={copy}>
+        <button
+          type="button"
+          className={primary ? styles.copyPrimary : styles.copy}
+          onClick={copy}
+        >
           {state === "copied"
             ? "COPIED"
             : state === "manual"
