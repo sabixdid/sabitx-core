@@ -1,6 +1,6 @@
 {
   "_note": "Single source of truth for the counter access point (NFC stand + /tap page + printed Wi-Fi QR). Re-run scripts/generate-wifi-qr.mjs after editing `network`.",
-  "status": "pending-approval",
+  "status": "live",
   "store": {
     "name": "SABIT'S MART",
     "locationLabel": "SET LOCATION",
